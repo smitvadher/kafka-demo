@@ -6,6 +6,9 @@ Kafka demo in .NET 8, showcasing the use of Confluent's Kafka Client. The demo i
 - [Apache Kafka](https://kafka.apache.org/downloads)
 - [Java Runtime Environment (JRE)](https://www.java.com/en/download/)
 
+## Configuration
+Adjust any necessary configuration settings in the code or configuration files. For example, update Kafka broker addresses or API endpoints.
+
 ## Usage
 
 Before running the application, ensure that Apache Kafka is running using the following commands:
