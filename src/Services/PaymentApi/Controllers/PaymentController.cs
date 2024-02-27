@@ -21,6 +21,7 @@ namespace PaymentApi.Controllers
             var random = new Random();
             var message = new PaymentMessage
             {
+                TransactionId = Guid.NewGuid(),
                 OrderId = random.Next(100),
                 Paid = random.Next(100) % 2 == 0,
             };
