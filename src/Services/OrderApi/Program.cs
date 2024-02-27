@@ -1,4 +1,6 @@
+using Kafka.Core;
 using OrderApi.Consumer;
+using OrderApi.Messages;
 
 namespace OrderApi
 {
@@ -14,7 +16,11 @@ namespace OrderApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddHostedService<PaymentConsumerService>();
+            builder.Services.AddKafkaConsumer<PaymentMessage, PaymentConsumer>(o =>
+            {
+                o.BootstrapServers = builder.Configuration.GetSection("Kafka:BootstrapServers").Value;
+                o.GroupId = "PaymentConsumerGroup";
+            });
 
             var app = builder.Build();
 

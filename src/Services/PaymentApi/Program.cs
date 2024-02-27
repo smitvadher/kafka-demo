@@ -1,5 +1,5 @@
-
-using PaymentApi.ProducerService;
+using Kafka.Core;
+using PaymentApi.Messages;
 
 namespace PaymentApi
 {
@@ -16,7 +16,10 @@ namespace PaymentApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddSingleton<PaymentProducerService>();
+            builder.Services.AddKafkaProducer<PaymentMessage>(o =>
+            {
+                o.BootstrapServers = builder.Configuration.GetSection("Kafka:BootstrapServers").Value;
+            });
 
             var app = builder.Build();
 

@@ -1,6 +1,6 @@
+using Kafka.Core;
 using Microsoft.AspNetCore.Mvc;
 using PaymentApi.Messages;
-using PaymentApi.ProducerService;
 
 namespace PaymentApi.Controllers
 {
@@ -8,18 +8,18 @@ namespace PaymentApi.Controllers
     [Route("api/[controller]")]
     public class PaymentController : ControllerBase
     {
-        private readonly PaymentProducerService _paymentProducerService;
+        private readonly IKafkaProducer<PaymentMessage> _kafkaProducer;
 
-        public PaymentController(PaymentProducerService paymentProducerService)
+        public PaymentController(IKafkaProducer<PaymentMessage> kafkaProducer)
         {
-            _paymentProducerService = paymentProducerService;
+            _kafkaProducer = kafkaProducer;
         }
 
         [HttpPost]
-        public async Task<IActionResult> ProcessPayment()
+        public async Task<IActionResult> ProcessPayment(CancellationToken cancellationToken)
         {
             var random = new Random();
-            var message = new PaymentMessage()
+            var message = new PaymentMessage
             {
                 OrderId = random.Next(100),
                 Paid = random.Next(100) % 2 == 0,
@@ -28,7 +28,7 @@ namespace PaymentApi.Controllers
             if (!message.Paid)
                 message.ErrorMessage = "Invalid transaction details.";
 
-            await _paymentProducerService.ProduceAsync("PaymentTransaction", message);
+            await _kafkaProducer.ProduceAsync("PaymentTransaction" + message.OrderId, message, cancellationToken);
 
             if (!message.Paid)
                 return BadRequest(message.ErrorMessage);

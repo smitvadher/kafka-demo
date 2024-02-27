@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderApi", "Services\OrderA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentApi", "Services\PaymentApi\PaymentApi.csproj", "{E6BC9E17-01E3-4DE9-8579-9165C85F3E2D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{81A82BB9-B07D-460D-BACD-10BBD419B9A8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kafka.Core", "Libraries\Kafka.Core\Kafka.Core.csproj", "{FC4DFE55-2C9A-47A6-B445-AE17454F5A2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,10 @@ Global
 		{E6BC9E17-01E3-4DE9-8579-9165C85F3E2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6BC9E17-01E3-4DE9-8579-9165C85F3E2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6BC9E17-01E3-4DE9-8579-9165C85F3E2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC4DFE55-2C9A-47A6-B445-AE17454F5A2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC4DFE55-2C9A-47A6-B445-AE17454F5A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC4DFE55-2C9A-47A6-B445-AE17454F5A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC4DFE55-2C9A-47A6-B445-AE17454F5A2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{BE574D6C-A7F7-4C39-A33F-53B6F31CF97F} = {0EB52BB1-FCE7-40C5-942C-11E76E941B57}
 		{E6BC9E17-01E3-4DE9-8579-9165C85F3E2D} = {0EB52BB1-FCE7-40C5-942C-11E76E941B57}
+		{FC4DFE55-2C9A-47A6-B445-AE17454F5A2A} = {81A82BB9-B07D-460D-BACD-10BBD419B9A8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {882F16D9-0E0B-481C-B4D3-E7FC6906D508}

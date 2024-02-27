@@ -1,6 +1,8 @@
-﻿namespace OrderApi.Messages
+﻿using Kafka.Core;
+
+namespace OrderApi.Messages
 {
-    public record PaymentMessage
+    public record PaymentMessage : IMessage
     {
         public int OrderId { get; set; }
 
