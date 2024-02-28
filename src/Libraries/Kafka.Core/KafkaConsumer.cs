@@ -9,7 +9,7 @@ namespace Kafka.Core
     {
         private readonly IKafkaConsumerHandler<TValue> _consumerHandler;
         private readonly ILogger<KafkaConsumer<TValue>> _logger;
-        private readonly KafkaConsumerConfig<TValue> _consumerConfig;
+        private readonly KafkaConsumerConfig<TValue> _config;
 
         public KafkaConsumer(IKafkaConsumerHandler<TValue> consumerHandler,
             IOptions<KafkaConsumerConfig<TValue>> config,
@@ -17,12 +17,12 @@ namespace Kafka.Core
         {
             _consumerHandler = consumerHandler;
             _logger = logger;
-            _consumerConfig = config.Value;
+            _config = config.Value;
         }
 
         public async Task ConsumeAsync(CancellationToken cancellationToken)
         {
-            var consumerBuilder = new ConsumerBuilder<string, string>(_consumerConfig);
+            var consumerBuilder = new ConsumerBuilder<string, string>(_config);
 
             using (var consumer = consumerBuilder.Build())
             {
