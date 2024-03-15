@@ -1,7 +1,8 @@
-﻿namespace Kafka.Core
+﻿using Confluent.Kafka;
+namespace Kafka.Core
 {
-    public interface IKafkaConsumerHandler<TValue> where TValue : IMessage
+    public interface IKafkaConsumerHandler<TKey, TValue> where TValue : IMessage
     {
-        Task HandleAsync(TValue message);
+        Task HandleAsync(Message<TKey, TValue> message);
     }
 }

@@ -16,7 +16,7 @@ namespace PaymentApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddKafkaProducer<PaymentMessage>(o =>
+            builder.Services.AddKafkaProducer<string, PaymentMessage>(o =>
             {
                 o.BootstrapServers = builder.Configuration.GetSection("Kafka:BootstrapServers").Value;
             });

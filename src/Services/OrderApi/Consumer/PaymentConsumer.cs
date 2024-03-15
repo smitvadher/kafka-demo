@@ -1,9 +1,10 @@
-﻿using Kafka.Core;
+﻿using Confluent.Kafka;
+using Kafka.Core;
 using OrderApi.Messages;
 
 namespace OrderApi.Consumer
 {
-    public class PaymentConsumer : IKafkaConsumerHandler<PaymentMessage>
+    public class PaymentConsumer : IKafkaConsumerHandler<string, PaymentMessage>
     {
         private readonly ILogger<PaymentConsumer> _logger;
 
@@ -12,13 +13,15 @@ namespace OrderApi.Consumer
             _logger = logger;
         }
 
-        public Task HandleAsync(PaymentMessage message)
+        public Task HandleAsync(Message<string, PaymentMessage> message)
         {
+            var data = message.Value;
+
             // logic to mark order as paid
             // adjust inventory - (can also produce adjust inventory message if inventory is managed in other service)
-            _logger.LogInformation(message.Paid
-                ? $"Received order#{message.OrderId} payment successfully."
-                : $"Order#{message.OrderId} payment failed due to {message.ErrorMessage}.");
+            _logger.LogInformation(data.Paid
+                ? $"Received order#{data.OrderId} payment successfully."
+                : $"Order#{data.OrderId} payment failed due to {data.ErrorMessage}.");
 
             return Task.CompletedTask;
         }

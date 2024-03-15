@@ -1,19 +1,18 @@
 ﻿using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 
 namespace Kafka.Core
 {
-    public class KafkaConsumer<TValue> : IKafkaConsumer<TValue> where TValue : IMessage
+    public class KafkaConsumer<TKey, TValue> : IKafkaConsumer<TKey, TValue> where TValue : IMessage
     {
-        private readonly IKafkaConsumerHandler<TValue> _consumerHandler;
-        private readonly ILogger<KafkaConsumer<TValue>> _logger;
+        private readonly IKafkaConsumerHandler<TKey, TValue> _consumerHandler;
+        private readonly ILogger<KafkaConsumer<TKey, TValue>> _logger;
         private readonly KafkaConsumerConfig<TValue> _config;
 
-        public KafkaConsumer(IKafkaConsumerHandler<TValue> consumerHandler,
+        public KafkaConsumer(IKafkaConsumerHandler<TKey, TValue> consumerHandler,
             IOptions<KafkaConsumerConfig<TValue>> config,
-            ILogger<KafkaConsumer<TValue>> logger)
+            ILogger<KafkaConsumer<TKey, TValue>> logger)
         {
             _consumerHandler = consumerHandler;
             _logger = logger;
@@ -22,18 +21,20 @@ namespace Kafka.Core
 
         public async Task ConsumeAsync(CancellationToken cancellationToken)
         {
-            var consumerBuilder = new ConsumerBuilder<string, string>(_config);
+            var consumerBuilder = new ConsumerBuilder<TKey, TValue>(_config)
+                .SetValueDeserializer(new KafkaDeserializer<TValue>());
 
             using (var consumer = consumerBuilder.Build())
             {
-                consumer.Subscribe(typeof(TValue).Name);
+                var topic = _config.Topic ?? typeof(TValue).Name;
+                consumer.Subscribe(topic);
 
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     try
                     {
                         var consumeResult = consumer.Consume(cancellationToken);
-                        var message = JsonConvert.DeserializeObject<TValue>(consumeResult.Message.Value);
+                        var message = consumeResult.Message;
                         await _consumerHandler.HandleAsync(message);
                     }
                     catch (Exception ex)

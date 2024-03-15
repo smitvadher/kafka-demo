@@ -16,7 +16,7 @@ namespace OrderApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddKafkaConsumer<PaymentMessage, PaymentConsumer>(o =>
+            builder.Services.AddKafkaConsumer<string, PaymentMessage, PaymentConsumer>(o =>
             {
                 o.BootstrapServers = builder.Configuration.GetSection("Kafka:BootstrapServers").Value;
                 o.GroupId = "PaymentConsumerGroup";

@@ -8,9 +8,9 @@ namespace PaymentApi.Controllers
     [Route("api/[controller]")]
     public class PaymentController : ControllerBase
     {
-        private readonly IKafkaProducer<PaymentMessage> _kafkaProducer;
+        private readonly IKafkaProducer<string, PaymentMessage> _kafkaProducer;
 
-        public PaymentController(IKafkaProducer<PaymentMessage> kafkaProducer)
+        public PaymentController(IKafkaProducer<string, PaymentMessage> kafkaProducer)
         {
             _kafkaProducer = kafkaProducer;
         }

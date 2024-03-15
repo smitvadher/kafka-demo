@@ -1,7 +1,7 @@
 ﻿namespace Kafka.Core
 {
-    public interface IKafkaProducer<TValue> where TValue : IMessage
+    public interface IKafkaProducer<in TKey, in TValue> where TValue : IMessage
     {
-        Task ProduceAsync(string key, TValue message, CancellationToken cancellationToken);
+        Task ProduceAsync(TKey key, TValue message, CancellationToken cancellationToken);
     }
 }

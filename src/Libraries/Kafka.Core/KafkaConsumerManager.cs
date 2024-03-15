@@ -14,9 +14,9 @@ namespace Kafka.Core
             _serviceProvider = serviceProvider;
         }
 
-        internal static void AddConsumerMessage<TValue>() where TValue : IMessage
+        internal static void AddConsumerMessage<TKey, TValue>() where TValue : IMessage
         {
-            MessageTypes.Add(typeof(IKafkaConsumer<TValue>), false);
+            MessageTypes.Add(typeof(IKafkaConsumer<TKey, TValue>), false);
         }
 
         private static void StartConsumers(IServiceProvider servicesProvider, CancellationToken stoppingToken)
@@ -26,7 +26,7 @@ namespace Kafka.Core
                 using (var scope = servicesProvider.CreateScope())
                 {
                     var service = scope.ServiceProvider.GetRequiredService(kafkaConsumer.Key);
-                    if (service is not IKafkaConsumer<IMessage> consumer) continue;
+                    if (service is not IKafkaConsumer<object, IMessage> consumer) continue;
 
                     var thread = new Thread(() => consumer.ConsumeAsync(stoppingToken));
                     thread.Start();

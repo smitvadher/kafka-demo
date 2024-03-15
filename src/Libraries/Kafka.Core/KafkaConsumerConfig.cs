@@ -8,5 +8,7 @@ namespace Kafka.Core
         {
             AutoOffsetReset = Confluent.Kafka.AutoOffsetReset.Earliest;
         }
+
+        public string Topic { get; set; }
     }
 }
