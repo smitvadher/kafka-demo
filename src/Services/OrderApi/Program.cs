@@ -10,21 +10,14 @@ namespace OrderApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddKafkaConsumer<string, PaymentMessage, PaymentConsumer>(o =>
-            {
-                o.BootstrapServers = builder.Configuration.GetSection("Kafka:BootstrapServers").Value;
-                o.GroupId = "PaymentConsumerGroup";
-            });
+            builder.Services.AddKafkaConsumerWithDefaultKey<PaymentMessage, PaymentConsumer>(builder.Configuration);
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -34,7 +27,6 @@ namespace OrderApi
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
